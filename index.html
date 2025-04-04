@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -9,14 +10,19 @@
     <title>Classic Snake Game</title>
     <link rel="stylesheet" href="style.css" />
   </head>
+
   <body>
     <div class="game-container">
+      
       <div class="header">
         <h1>Snake</h1>
         <div id="score">Score: 0</div>
       </div>
+
       <div class="canvas-container">
+        <!-- canvas for the game -->
         <canvas id="gameCanvas"></canvas>
+
         <div id="gameOver" class="overlay hidden">
           <div class="message-box">
             <h2>Game Over!</h2>
@@ -24,6 +30,7 @@
             <button id="restartButton">Play Again</button>
           </div>
         </div>
+
         <div id="startMessage" class="overlay">
           <div class="message-box">
             <h2>Classic Snake</h2>
@@ -32,6 +39,7 @@
           </div>
         </div>
       </div>
+
       <div class="controls-container">
         <button class="control-btn" id="btnUp">▲</button>
         <div>
@@ -40,6 +48,7 @@
           <button class="control-btn" id="btnRight">▶</button>
         </div>
       </div>
+
     </div>
 
     <script src="script.js"></script>
