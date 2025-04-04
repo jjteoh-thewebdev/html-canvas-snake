@@ -4,6 +4,9 @@ A modern implementation of the classic Nokia Snake game using HTML Canvas and Ja
 
 ![Snake Game Screenshot](preview.gif)
 
+
+[Live Preview](https://jjteoh-thewebdev.github.io/html-canvas-snake/)
+
 ## Features 🎮
 
 - 🎯 Classic Snake gameplay with a modern twist
