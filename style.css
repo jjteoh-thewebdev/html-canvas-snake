@@ -1,0 +1,203 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Courier New", Courier, monospace; /* Classic feel */
+    touch-action: manipulation; /* Prevent double-tap zoom on buttons */
+  }
+  
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #c7f0d8; /* Light greenish background */
+    color: #333;
+    overflow: hidden; /* Prevent scrolling */
+  }
+  
+  .game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #92c8a0; /* Slightly darker green */
+    padding: 15px;
+    border: 5px solid #333;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    max-width: 95vw; /* Responsive width */
+    max-height: 95vh; /* Responsive height */
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 0 5px;
+  }
+  
+  h1 {
+    font-size: 1.5em;
+    margin: 0;
+  }
+  
+  #score {
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+  
+  .canvas-container {
+    position: relative; /* Needed for overlay positioning */
+    width: 100%;
+    /* Aspect ratio will be controlled by JS setting canvas width/height */
+  }
+  
+  #gameCanvas {
+    display: block; /* Remove extra space below canvas */
+    background-color: #7bac84; /* Game area background */
+    border: 3px solid #333; /* Border around game area */
+    width: 100%; /* Make canvas fill container width */
+    height: auto; /* Maintain aspect ratio */
+    image-rendering: pixelated; /* Keep pixels sharp */
+    image-rendering: crisp-edges;
+  }
+  
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(51, 51, 51, 0.8); /* Dark semi-transparent overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #e0e0e0; /* Light text on overlay */
+  }
+  
+  .message-box {
+    background-color: #333;
+    padding: 20px 30px;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+  }
+  
+  .overlay h2 {
+    margin-bottom: 15px;
+    font-size: 1.8em;
+  }
+  
+  .overlay p {
+    margin-bottom: 20px;
+    font-size: 1.2em;
+  }
+  
+  .overlay button {
+    padding: 10px 20px;
+    font-size: 1.1em;
+    cursor: pointer;
+    background-color: #c7f0d8;
+    color: #333;
+    border: 2px solid #333;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+  
+  .overlay button:hover {
+    background-color: #7bac84;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  .controls-container {
+    margin-top: 15px;
+    display: none; /* Hidden by default, shown via media query */
+    flex-direction: column;
+    align-items: center;
+    gap: 5px; /* Space between rows */
+  }
+  
+  .controls-container > div {
+    /* Row for Left, Down, Right */
+    display: flex;
+    gap: 10px; /* Space between buttons */
+  }
+  
+  .control-btn {
+    font-size: 1.8em; /* Larger buttons */
+    padding: 8px 15px;
+    min-width: 60px; /* Ensure minimum size */
+    min-height: 50px;
+    cursor: pointer;
+    background-color: #7bac84;
+    border: 2px solid #333;
+    border-radius: 5px;
+    color: #333;
+    font-weight: bold;
+    user-select: none; /* Prevent text selection on tap */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+  
+  .control-btn:active {
+    background-color: #5a8c6a; /* Darker shade when pressed */
+  }
+  
+  /* Media Query for smaller screens (tablets/mobiles) */
+  @media (max-width: 768px) {
+    .controls-container {
+      display: flex; /* Show controls */
+    }
+  
+    h1 {
+      font-size: 1.3em;
+    }
+    #score {
+      font-size: 1em;
+    }
+    .overlay h2 {
+      font-size: 1.5em;
+    }
+    .overlay p {
+      font-size: 1em;
+    }
+    .overlay button {
+      font-size: 1em;
+    }
+  }
+  
+  /* Media Query for very small screens */
+  @media (max-width: 480px) {
+    .game-container {
+      padding: 10px;
+      border-width: 3px;
+    }
+    h1 {
+      font-size: 1.1em;
+    }
+    #score {
+      font-size: 0.9em;
+    }
+    .control-btn {
+      font-size: 1.5em;
+      padding: 6px 12px;
+      min-width: 50px;
+      min-height: 45px;
+    }
+    .overlay h2 {
+      font-size: 1.3em;
+    }
+    .overlay p {
+      font-size: 0.9em;
+    }
+    .overlay button {
+      font-size: 0.9em;
+      padding: 8px 15px;
+    }
+  }
+  
