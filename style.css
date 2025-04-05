@@ -16,7 +16,13 @@
     color: #333;
     overflow: hidden; /* Prevent scrolling */
   }
-  
+
+  .footer {
+    margin-top: 15px;
+    font-size: 0.8em;
+    text-align: center;
+  }
+
   .game-container {
     display: flex;
     flex-direction: column;
@@ -84,7 +90,7 @@
     border-radius: 5px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
   }
-  
+
   .overlay h2 {
     margin-bottom: 15px;
     font-size: 1.8em;
@@ -109,10 +115,12 @@
   .overlay button:hover {
     background-color: #7bac84;
   }
+
   
   .hidden {
     display: none;
   }
+
   
   .controls-container {
     margin-top: 15px;
@@ -144,10 +152,11 @@
     -moz-user-select: none;
     -ms-user-select: none;
   }
-  
+
   .control-btn:active {
     background-color: #5a8c6a; /* Darker shade when pressed */
   }
+
   
   /* Media Query for smaller screens (tablets/mobiles) */
   @media (max-width: 768px) {
