@@ -10,6 +10,10 @@ const startButton = document.getElementById("startButton");
 const gameContainer = document.querySelector(".game-container");
 const canvasContainer = document.querySelector(".canvas-container");
 
+// --- Audio Elements ---
+const eatSound = new Audio('sounds/eat.mp3');
+const gameOverSound = new Audio('sounds/game-over.mp3');
+
 // --- Game Constants ---
 const GRID_SIZE = 20; // Number of cells in the grid
 let CANVAS_WIDTH, CANVAS_HEIGHT;
@@ -142,6 +146,7 @@ function moveSnake() {
   if (head.x === food.x && head.y === food.y) {
     score++;
     scoreElement.textContent = `Score: ${score}`;
+    eatSound.play(); // Play eat sound effect
 
     // create food at a new position
     generateFood();
@@ -309,6 +314,7 @@ function endGame() {
   gameLoopInterval = null;
   finalScoreElement.textContent = score;
   gameOverElement.classList.remove("hidden");
+  gameOverSound.play(); // Play game over sound effect
 }
 
 function showStartMessage() {
