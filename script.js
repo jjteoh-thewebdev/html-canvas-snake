@@ -9,10 +9,11 @@ const startMessageElement = document.getElementById("startMessage");
 const startButton = document.getElementById("startButton");
 const gameContainer = document.querySelector(".game-container");
 const canvasContainer = document.querySelector(".canvas-container");
+const easterEggVideo = document.getElementById("easterEggVideo");
 
 // --- Audio Elements ---
-const eatSound = new Audio('sounds/eat.mp3');
-const gameOverSound = new Audio('sounds/game-over.mp3');
+const eatSound = new Audio('media/eat.mp3');
+const gameOverSound = new Audio('media/game-over.mp3');
 
 // --- Game Constants ---
 const GRID_SIZE = 20; // Number of cells in the grid
@@ -146,7 +147,12 @@ function moveSnake() {
   if (head.x === food.x && head.y === food.y) {
     score++;
     scoreElement.textContent = `Score: ${score}`;
-    eatSound.play(); // Play eat sound effect
+    eatSound.play();
+
+    // Check for easter egg
+    if (score === 100) { // Trigger at 100
+      triggerEasterEgg();
+    }
 
     // create food at a new position
     generateFood();
@@ -359,6 +365,24 @@ function showStartMessage() {
 
   startMessageElement.classList.remove("hidden");
   gameOverElement.classList.add("hidden");
+}
+
+function triggerEasterEgg() {
+  // Pause the game
+  gameActive = false;
+  clearInterval(gameLoopInterval);
+
+  // Show and play the video
+  easterEggVideo.classList.remove("hidden");
+  easterEggVideo.play();
+
+  // Hide the video when it ends
+  easterEggVideo.onended = function () {
+    easterEggVideo.classList.add("hidden");
+    // Resume the game
+    gameActive = true;
+    gameLoopInterval = setInterval(gameLoop, currentSpeed);
+  };
 }
 
 // --- Event Listeners ---

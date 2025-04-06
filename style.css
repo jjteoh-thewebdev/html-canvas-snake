@@ -211,3 +211,17 @@
     }
   }
   
+  .easter-egg-video {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 90vw;
+    max-height: 90vh;
+    z-index: 1000;
+    background-color: black;
+  }
+
+  .easter-egg-video.hidden {
+    display: none;
+  }

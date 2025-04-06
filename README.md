@@ -64,16 +64,19 @@ This project demonstrates:
 - Responsive design
 - Modern JavaScript features
 
-
 ## License 📄
 
 This project is open source and available under the [MIT License](LICENSE).
 
-## Acknowledgments 🙏
+## Credits 🙏
 
 - Inspired by the classic Nokia Snake game
-- Built with ❤️ for the web development community
+- Food eaten sound effect by [Ribhav Agrawal](https://pixabay.com/users/ribhavagrawal-39286533/)
 
----
+- Game over sound effect by [FoxBoyTails](https://pixabay.com/users/foxboytails-49447089)
+
+- Easter Egg video by [CuriosityShorts](https://www.youtube.com/watch?v=WAHoqt2y77k)
+
+
 
 *Enjoy the game? Star the repository and share it with your friends! ⭐*
