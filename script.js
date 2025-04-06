@@ -12,14 +12,20 @@ const canvasContainer = document.querySelector(".canvas-container");
 const easterEggVideo = document.getElementById("easterEggVideo");
 const pausedMessageElement = document.getElementById("pausedMessage");
 
-// --- Audio Elements ---
-const eatSound = new Audio('media/eat.mp3');
-const gameOverSound = new Audio('media/game-over.mp3');
-
 // --- Game Constants ---
 const GRID_SIZE = 20; // Number of cells in the grid
 let CANVAS_WIDTH, CANVAS_HEIGHT;
 let CELL_SIZE;
+const POWER_UP_POINTS = 3;
+const EATER_EGG_TRIGGER = 50;
+
+// --- Audio Elements ---
+const eatSound = new Audio('media/eat.mp3');
+const gameOverSound = new Audio('media/game-over.mp3');
+
+// --- Image Elements ---
+const powerUpImage = new Image();
+powerUpImage.src = 'media/rat.png';
 
 // --- Define color gradient start/end colors ---
 // Head has darker color and gradually becomes lighter towards the tail
@@ -29,10 +35,13 @@ const SNAKE_TAIL_COLOR_RGB = [134, 239, 172]; // Lighter Green (tailwind green-4
 const FOOD_COLOR = "#ef4444"; // Red (tailwind red-500)
 const BORDER_COLOR = "#555555"; // Slightly lighter border for contrast on white
 const INITIAL_SPEED_MS = 150;
+const MAX_SPEED_MS = 80;
+
 
 // --- Game State ---
 let snake = [];
 let food = { x: 0, y: 0 };
+let powerUp = null;
 let dx = 0;
 let dy = 0;
 let score = 0;
@@ -128,6 +137,21 @@ function drawFood() {
   ctx.strokeRect(food.x * CELL_SIZE, food.y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
 }
 
+// Function to draw the power-up
+function drawPowerUp() {
+
+  // image must fit into the cell
+  if (powerUp) {
+    ctx.drawImage(
+      powerUpImage,
+      powerUp.x * CELL_SIZE,
+      powerUp.y * CELL_SIZE,
+      CELL_SIZE,
+      CELL_SIZE
+    );
+  }
+}
+
 function moveSnake() {
   if (!gameActive || isPaused) return;
 
@@ -152,21 +176,34 @@ function moveSnake() {
     eatSound.play();
 
     // Check for easter egg
-    if (score === 100) { // Trigger at 100
+    if (score === EATER_EGG_TRIGGER) {
       triggerEasterEgg();
     }
 
     // create food at a new position
     generateFood();
 
+    // Generate power-up every 10 points
+    if (score % 10 === 0) {
+      generatePowerUp();
+    }
+
     // we increase the speed as the game progresses to make it more challenging
     // this can be achieved by reducing the interval time between each game loop
     // so that the snake get redrawn more frequently
-    if (score % 5 === 0 && currentSpeed > 50) {
+    if (score % 5 === 0 && currentSpeed > MAX_SPEED_MS) {
       currentSpeed -= 10;
+
+      console.log(currentSpeed)
       clearInterval(gameLoopInterval);
       gameLoopInterval = setInterval(gameLoop, currentSpeed);
     }
+  } else if (powerUp && head.x === powerUp.x && head.y === powerUp.y) {
+    // Handle power-up collection
+    eatSound.play();
+    score += POWER_UP_POINTS;
+    scoreElement.textContent = `Score: ${score}`;
+    powerUp = null; // Remove the power-up
   } else {
     // if the head did not hit the food, we remove the last part of the snake
     // making it look like the snake is moving forward
@@ -183,6 +220,20 @@ function generateFood() {
   } while (snake.some((part) => part.x === newFoodX && part.y === newFoodY));
 
   food = { x: newFoodX, y: newFoodY };
+}
+
+// Function to generate a power-up
+function generatePowerUp() {
+  let newPowerUpX, newPowerUpY;
+  do {
+    newPowerUpX = Math.floor(Math.random() * GRID_SIZE);
+    newPowerUpY = Math.floor(Math.random() * GRID_SIZE);
+  } while (
+    snake.some((part) => part.x === newPowerUpX && part.y === newPowerUpY) ||
+    (food.x === newPowerUpX && food.y === newPowerUpY)
+  );
+
+  powerUp = { x: newPowerUpX, y: newPowerUpY };
 }
 
 function handleKeyDown(event) {
@@ -281,6 +332,7 @@ function gameLoop() {
   }
   clearCanvas();
   drawFood();
+  drawPowerUp();
   moveSnake();
   drawSnake();
 }
@@ -319,6 +371,10 @@ function startGame() {
 }
 
 function endGame() {
+  if(!gameOverElement.classList.contains("hidden")) {
+    return; // Prevent multiple game over messages
+  }
+
   console.log("Game Over!");
   gameActive = false;
   clearInterval(gameLoopInterval);
@@ -326,6 +382,8 @@ function endGame() {
   finalScoreElement.textContent = score;
   gameOverElement.classList.remove("hidden");
   gameOverSound.play(); // Play game over sound effect
+  powerUp = null;
+  currentSpeed = INITIAL_SPEED_MS; // Reset speed for next game
 }
 
 function showStartMessage() {
@@ -375,7 +433,6 @@ function showStartMessage() {
 function triggerEasterEgg() {
   // Pause the game
   gameActive = false;
-  clearInterval(gameLoopInterval);
 
   // Show and play the video
   easterEggVideo.classList.remove("hidden");
@@ -386,7 +443,6 @@ function triggerEasterEgg() {
     easterEggVideo.classList.add("hidden");
     // Resume the game
     gameActive = true;
-    gameLoopInterval = setInterval(gameLoop, currentSpeed);
   };
 }
 
@@ -433,6 +489,7 @@ window.addEventListener("resize", () => {
   } else if (gameActive) {
     clearCanvas(); // Clear with white
     drawFood();
+    drawPowerUp(); // Draw the power-up
     drawSnake(); // Redraw gradient snake
   } else if (!gameOverElement.classList.contains("hidden")) {
     clearCanvas(); // Clear with white
