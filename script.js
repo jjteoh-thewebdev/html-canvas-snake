@@ -10,6 +10,7 @@ const startButton = document.getElementById("startButton");
 const gameContainer = document.querySelector(".game-container");
 const canvasContainer = document.querySelector(".canvas-container");
 const easterEggVideo = document.getElementById("easterEggVideo");
+const pausedMessageElement = document.getElementById("pausedMessage");
 
 // --- Audio Elements ---
 const eatSound = new Audio('media/eat.mp3');
@@ -39,6 +40,7 @@ let changingDirection = false;
 let gameLoopInterval = null;
 let gameActive = false;
 let currentSpeed = INITIAL_SPEED_MS;
+let isPaused = false;
 
 // --- Touch Controls ---
 const btnUp = document.getElementById("btnUp");
@@ -127,7 +129,7 @@ function drawFood() {
 }
 
 function moveSnake() {
-  if (!gameActive) return;
+  if (!gameActive || isPaused) return;
 
   // snake[0] is the head
   const head = { x: snake[0].x + dx, y: snake[0].y + dy };
@@ -194,7 +196,7 @@ function handleKeyDown(event) {
     return;
   }
 
-  if (!gameActive || changingDirection) return;
+  if (!gameActive || changingDirection || isPaused) return;
 
   const keyPressed = event.key;
 
@@ -231,7 +233,7 @@ function handleKeyDown(event) {
 // handle touch control for mobile players
 function handleTouchControl(newDx, newDy) {
   // make sure the previous direction is executed before a new direction is set
-  if (changingDirection || !gameActive) return;
+  if (changingDirection || !gameActive || isPaused) return;
 
   // just translate condition to booleans for better readability
   const goingUp = dy === -1;
@@ -272,6 +274,7 @@ function checkGameOver() {
 }
 
 function gameLoop() {
+  if (isPaused) return;
   if (checkGameOver()) {
     endGame();
     return;
@@ -291,9 +294,11 @@ function startGame() {
   dx = 1;
   dy = 0;
   changingDirection = false;
+  isPaused = false;
   scoreElement.textContent = `Score: ${score}`;
   gameOverElement.classList.add("hidden");
   startMessageElement.classList.add("hidden");
+  pausedMessageElement.classList.add("hidden");
 
   const startX = Math.floor(GRID_SIZE / 2);
   const startY = Math.floor(GRID_SIZE / 2);
@@ -384,6 +389,34 @@ function triggerEasterEgg() {
     gameLoopInterval = setInterval(gameLoop, currentSpeed);
   };
 }
+
+// Function to pause the game
+function pauseGame() {
+  isPaused = true;
+  pausedMessageElement.classList.remove("hidden");
+}
+
+// Function to resume the game
+function resumeGame() {
+  isPaused = false;
+  pausedMessageElement.classList.add("hidden");
+}
+
+// Function to handle space key press
+document.addEventListener('keydown', (event) => {
+  if (event.code === 'Space') {
+    // is game over or not started, play the game
+    if (!gameActive && 
+      (!gameOverElement.classList.contains("hidden") || !startMessageElement.classList.contains("hidden"))
+    ) {
+      startGame();
+    } else if (isPaused) {
+      resumeGame();
+    } else {
+      pauseGame();
+    }
+  }
+});
 
 // --- Event Listeners ---
 document.addEventListener("keydown", handleKeyDown);
