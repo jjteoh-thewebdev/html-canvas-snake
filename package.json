@@ -1,0 +1,23 @@
+{
+  "name": "html-canvas-snake",
+  "version": "1.1.0",
+  "description": "A modern implementation of the classic Nokia Snake game using HTML Canvas and JavaScript. Play it right in your browser!",
+  "main": "script.js",
+  "scripts": {
+    "release": "standard-version",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jjteoh-thewebdev/html-canvas-snake.git"
+  },
+  "author": "JJ TEOH<https://github.com/jjteoh-thewebdev>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jjteoh-thewebdev/html-canvas-snake/issues"
+  },
+  "homepage": "https://github.com/jjteoh-thewebdev/html-canvas-snake#readme",
+  "devDependencies": {
+    "standard-version": "^9.5.0"
+  }
+}
